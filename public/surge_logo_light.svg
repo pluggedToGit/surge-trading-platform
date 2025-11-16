@@ -1,0 +1,11 @@
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+<rect width="100%" height="100%" fill="white"/>
+<g transform="translate(40,40)">
+  <rect x="0" y="120" width="40" height="80" fill="#2ca8a8"/>
+  <rect x="50" y="100" width="40" height="100" fill="#2ca8a8"/>
+  <rect x="100" y="80" width="40" height="120" fill="#2ca8a8"/>
+  <polyline points="0,120 50,100 100,80 140,40" fill="none" stroke="#004c7d" stroke-width="8"/>
+  <polygon points="140,20 160,40 120,40" fill="#004c7d"/>
+</g>
+<text x="150" y="260" font-size="32" font-family="Arial" text-anchor="middle" fill="#222">SURGE</text>
+</svg>

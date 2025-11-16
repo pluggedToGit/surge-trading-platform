@@ -1,0 +1,224 @@
+.performance-section {
+  background: var(--darker-bg);
+}
+
+.ticker-selector {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.ticker-btn {
+  padding: 0.75rem 2rem;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 0.5rem;
+  color: var(--gray-text);
+  font-weight: 700;
+  font-size: 1.125rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ticker-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.ticker-btn.active {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: white;
+  border-color: transparent;
+  transform: scale(1.05);
+}
+
+.performance-comparison {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.comparison-card {
+  padding: 2.5rem 2rem;
+  text-align: center;
+  min-width: 280px;
+  flex: 1;
+  max-width: 350px;
+}
+
+.comparison-card.highlight {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 30px rgba(236, 72, 153, 0.3);
+}
+
+.comparison-label {
+  font-size: 0.875rem;
+  color: var(--gray-text);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.comparison-value {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+
+.comparison-value.positive {
+  color: var(--success-color);
+}
+
+.comparison-value.negative {
+  color: var(--danger-color);
+}
+
+.comparison-description {
+  color: var(--gray-text);
+  font-size: 0.9rem;
+}
+
+.comparison-arrow {
+  font-size: 3rem;
+  color: var(--primary-color);
+}
+
+.improvement-badge {
+  position: absolute;
+  top: -20px;
+  right: 10%;
+  background: linear-gradient(135deg, var(--success-color), var(--primary-color));
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.improvement-icon {
+  font-size: 1.5rem;
+}
+
+.strategies-performance {
+  margin-bottom: 4rem;
+}
+
+.performance-subtitle {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--light-text);
+}
+
+.performance-table {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--darker-bg);
+  font-weight: 700;
+  color: var(--gray-text);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  transition: background 0.2s ease;
+}
+
+.table-row:hover {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.table-cell {
+  display: flex;
+  align-items: center;
+}
+
+.strategy-name-cell {
+  gap: 1rem;
+  font-weight: 600;
+}
+
+.rank-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.insight-card {
+  text-align: center;
+  padding: 2rem;
+}
+
+.insight-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.insight-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--light-text);
+}
+
+.insight-text {
+  color: var(--gray-text);
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .table-header, .table-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .table-cell {
+    justify-content: space-between;
+  }
+  
+  .table-cell::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: var(--gray-text);
+  }
+  
+  .comparison-arrow {
+    transform: rotate(90deg);
+  }
+}
