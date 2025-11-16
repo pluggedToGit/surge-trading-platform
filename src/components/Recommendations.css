@@ -592,6 +592,14 @@
 .comparison-money {
   font-size: 1rem;
   color: var(--gray-text);
+  margin-bottom: 0.5rem;
+}
+
+.comparison-details {
+  font-size: 0.85rem;
+  color: var(--gray-text);
+  margin-top: 0.5rem;
+  opacity: 0.8;
 }
 
 .comparison-vs {

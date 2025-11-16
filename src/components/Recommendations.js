@@ -190,7 +190,20 @@ const Recommendations = () => {
         stopLoss: rec.stop_loss_level,
         riskCategory: rec.risk_category,
         historicalPerformance: rec.historical_performance || [],  // Strategy performance
-        buyHoldPerformance: rec.buy_hold_performance || []  // Buy-and-hold performance
+        buyHoldPerformance: rec.buy_hold_performance || [],  // Buy-and-hold performance
+        // New accurate fields
+        finalValue: rec.final_value || 0,
+        totalTrades: rec.total_trades || 0,
+        winningTrades: rec.winning_trades || 0,
+        losingTrades: rec.losing_trades || 0,
+        avgWin: rec.avg_win || 0,
+        avgLoss: rec.avg_loss || 0,
+        totalTaxesPaid: rec.total_taxes_paid || 0,
+        buyHoldReturn: rec.buy_hold_return_pct || 0,
+        buyHoldFinalValue: rec.buy_hold_final_value || 0,
+        buyHoldTaxesPaid: rec.buy_hold_taxes_paid || 0,
+        excessReturn: rec.excess_return_pct || 0,
+        trades: rec.trades || []
       }));
 
       setRecommendations(transformedData);
@@ -864,10 +877,13 @@ const Recommendations = () => {
                 <div className="comparison-item strategy-performance">
                   <div className="comparison-label">📈 SURGE Strategy (Market Timing)</div>
                   <div className="comparison-value positive">
-                    +{calculateStrategyReturn(selectedTicker.ticker).toFixed(1)}%
+                    +{selectedTicker.returns.toFixed(1)}%
                   </div>
                   <div className="comparison-money">
-                    $10,000 → ${(10000 * (1 + calculateStrategyReturn(selectedTicker.ticker) / 100)).toLocaleString('en-US', {maximumFractionDigits: 0})}
+                    $10,000 → ${selectedTicker.finalValue.toLocaleString('en-US', {maximumFractionDigits: 0})}
+                  </div>
+                  <div className="comparison-details">
+                    {selectedTicker.totalTrades} trades • Tax paid: ${selectedTicker.totalTaxesPaid.toLocaleString('en-US', {maximumFractionDigits: 0})}
                   </div>
                 </div>
                 
@@ -876,20 +892,23 @@ const Recommendations = () => {
                 <div className="comparison-item buyhold-performance">
                   <div className="comparison-label">📊 Buy & Hold {selectedTicker.ticker}</div>
                   <div className="comparison-value">
-                    +{calculateBuyHoldReturn(selectedTicker.ticker).toFixed(1)}%
+                    +{selectedTicker.buyHoldReturn.toFixed(1)}%
                   </div>
                   <div className="comparison-money">
-                    $10,000 → ${(10000 * (1 + calculateBuyHoldReturn(selectedTicker.ticker) / 100)).toLocaleString('en-US', {maximumFractionDigits: 0})}
+                    $10,000 → ${selectedTicker.buyHoldFinalValue.toLocaleString('en-US', {maximumFractionDigits: 0})}
+                  </div>
+                  <div className="comparison-details">
+                    Tax paid: ${selectedTicker.buyHoldTaxesPaid.toLocaleString('en-US', {maximumFractionDigits: 0})}
                   </div>
                 </div>
                 
                 <div className="comparison-difference">
                   <div className="difference-label">✨ Extra Profit</div>
                   <div className="difference-value">
-                    +{(calculateStrategyReturn(selectedTicker.ticker) - calculateBuyHoldReturn(selectedTicker.ticker)).toFixed(1)}%
+                    +{selectedTicker.excessReturn.toFixed(1)}%
                   </div>
                   <div className="difference-money">
-                    Extra ${((10000 * (1 + calculateStrategyReturn(selectedTicker.ticker) / 100)) - (10000 * (1 + calculateBuyHoldReturn(selectedTicker.ticker) / 100))).toLocaleString('en-US', {maximumFractionDigits: 0})}
+                    Extra ${(selectedTicker.finalValue - selectedTicker.buyHoldFinalValue).toLocaleString('en-US', {maximumFractionDigits: 0})}
                   </div>
                 </div>
               </div>
