@@ -232,40 +232,6 @@ const Recommendations = () => {
     }
   };
 
-  const calculateBuyHoldReturn = (ticker) => {
-    // Find the recommendation for this ticker
-    const rec = recommendations.find(r => r.ticker === ticker);
-    if (!rec || !rec.buyHoldPerformance || rec.buyHoldPerformance.length === 0) {
-      // Fallback - return 0 if no data
-      return 0;
-    }
-
-    // Calculate buy-and-hold return from actual data
-    const buyHoldData = rec.buyHoldPerformance;
-    const initialValue = buyHoldData[0].portfolio_value;
-    const finalValue = buyHoldData[buyHoldData.length - 1].portfolio_value;
-    
-    const totalReturn = ((finalValue - initialValue) / initialValue) * 100;
-    return totalReturn;
-  };
-
-  const calculateStrategyReturn = (ticker) => {
-    // Find the recommendation for this ticker
-    const rec = recommendations.find(r => r.ticker === ticker);
-    if (!rec || !rec.historicalPerformance || rec.historicalPerformance.length === 0) {
-      // Fallback to recommendation's total return
-      return rec ? rec.returns : 0;
-    }
-
-    // Get the first and last values from historical performance
-    const firstValue = rec.historicalPerformance[0].portfolio_value;
-    const lastValue = rec.historicalPerformance[rec.historicalPerformance.length - 1].portfolio_value;
-    
-    // Calculate total return percentage
-    const totalReturn = ((lastValue - firstValue) / firstValue) * 100;
-    return totalReturn;
-  };
-
   // Generate chart data from real API historical performance
   const generateChartDataFromAPI = (recommendation) => {
     if (!recommendation || !recommendation.historicalPerformance || recommendation.historicalPerformance.length === 0) {
