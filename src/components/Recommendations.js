@@ -12,6 +12,7 @@ import {
   Filler
 } from 'chart.js';
 import './Recommendations.css';
+import { portfolioAPI } from '../utils/api';
 
 // Register ChartJS components
 ChartJS.register(
@@ -30,7 +31,6 @@ const Recommendations = () => {
   const [selectedTicker, setSelectedTicker] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [apiUrl] = useState('http://127.0.0.1:5454');
   const [timePeriod, setTimePeriod] = useState('all'); // all, 10y, 5y, 1y
   const [showTableView, setShowTableView] = useState(false);
   const [customStartDate, setCustomStartDate] = useState('1980-01-01');
@@ -155,27 +155,15 @@ const Recommendations = () => {
       setLoading(true);
       setError(null);
       
-      // Call the Python API
-      const response = await fetch(`${apiUrl}/api/recommendations`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          tickers: ['TQQQ', 'SQQQ', 'AMD', 'TSLA', 'RKLB'],
-          date: new Date().toISOString().split('T')[0],
-          start_date: customStartDate  // Use custom start date
-        })
+      // Call the API
+      const apiData = await portfolioAPI.getRecommendations({
+        tickers: ['TQQQ', 'SQQQ', 'AMD', 'TSLA', 'RKLB'],
+        date: new Date().toISOString().split('T')[0],
+        start_date: customStartDate  // Use custom start date
       });
-
-      if (!response.ok) {
-        throw new Error(`API returned ${response.status}: ${response.statusText}`);
-      }
-
-      const data = await response.json();
       
       // Transform API response to match our component format
-      const transformedData = data.recommendations.map(rec => ({
+      const transformedData = apiData.recommendations.map(rec => ({
         ticker: rec.ticker,
         strategy: rec.strategy,
         action: rec.action,

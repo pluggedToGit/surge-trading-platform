@@ -169,6 +169,61 @@
   display: none;
 }
 
+/* User Authentication Section */
+.nav-auth {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 0.5rem;
+  color: var(--light-text);
+  font-size: 0.9rem;
+}
+
+.user-icon {
+  font-size: 1.2rem;
+}
+
+.user-name {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.btn-signout {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-signout:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #ef4444;
+}
+
+.btn-login {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.btn-login:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #10b981;
+}
+
 /* Mobile styles */
 @media (max-width: 768px) {
   .nav-container {
@@ -215,6 +270,28 @@
   .nav-link.active {
     background: rgba(59, 130, 246, 0.2);
     border-left: 3px solid var(--primary-color);
+  }
+
+  /* Mobile auth section */
+  .nav-auth {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-left: 0;
+    padding: 1rem 2rem;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .user-info {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .btn-signout,
+  .btn-login {
+    width: 100%;
   }
 
   .nav-overlay {

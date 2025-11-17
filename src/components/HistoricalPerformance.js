@@ -12,6 +12,7 @@ import {
   Filler
 } from 'chart.js';
 import './HistoricalPerformance.css';
+import { portfolioAPI } from '../utils/api';
 
 ChartJS.register(
   CategoryScale,
@@ -28,7 +29,6 @@ const HistoricalPerformance = () => {
   const [selectedTicker, setSelectedTicker] = useState('TQQQ');
   const [performanceData, setPerformanceData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [apiUrl] = useState('http://127.0.0.1:5454');
   const [timePeriod, setTimePeriod] = useState('5y');
   const [customStartDate, setCustomStartDate] = useState('');
   const [customEndDate, setCustomEndDate] = useState('');
@@ -49,24 +49,12 @@ const HistoricalPerformance = () => {
       const startDate = useCustomDates && customStartDate ? customStartDate : getStartDate();
       const endDate = useCustomDates && customEndDate ? customEndDate : new Date().toISOString().split('T')[0];
       
-      const response = await fetch(`${apiUrl}/api/recommendations`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          tickers: [selectedTicker],
-          date: endDate,
-          start_date: startDate,
-          initial_capital: initialCapital,
-        }),
+      const data = await portfolioAPI.getRecommendations({
+        tickers: [selectedTicker],
+        date: endDate,
+        start_date: startDate,
+        initial_capital: initialCapital,
       });
-      
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
-      
-      const data = await response.json();
       
       // Extract the data for the selected ticker
       if (data.recommendations && data.recommendations.length > 0) {

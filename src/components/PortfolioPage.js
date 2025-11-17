@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './PortfolioPage.css';
+import { portfolioAPI } from '../utils/api';
+import { useAuth } from '../contexts/AuthContext';
 
 const PortfolioPage = () => {
+  const { user } = useAuth();
   const [portfolio, setPortfolio] = useState(null);
   const [tradeHistory, setTradeHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [apiUrl] = useState('http://127.0.0.1:5454');
   
   // Trade form state
   const [tradeForm, setTradeForm] = useState({
@@ -25,8 +27,7 @@ const PortfolioPage = () => {
 
   const loadPortfolio = async () => {
     try {
-      const response = await fetch(`${apiUrl}/api/portfolio`);
-      const data = await response.json();
+      const data = await portfolioAPI.getPortfolio();
       setPortfolio(data);
       setLoading(false);
     } catch (err) {
@@ -38,8 +39,7 @@ const PortfolioPage = () => {
 
   const loadTradeHistory = async () => {
     try {
-      const response = await fetch(`${apiUrl}/api/portfolio/trades?limit=20`);
-      const data = await response.json();
+      const data = await portfolioAPI.getTrades();
       setTradeHistory(data.trades || []);
     } catch (err) {
       console.error('Error loading trade history:', err);
@@ -51,19 +51,13 @@ const PortfolioPage = () => {
     setTradeStatus({ type: 'loading', message: 'Executing trade...' });
 
     try {
-      const response = await fetch(`${apiUrl}/api/portfolio/trade`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ticker: tradeForm.ticker.toUpperCase(),
-          action: tradeForm.action,
-          shares: parseFloat(tradeForm.shares),
-          price: parseFloat(tradeForm.price),
-          strategy: tradeForm.strategy || 'Manual'
-        })
+      const data = await portfolioAPI.executeTrade({
+        ticker: tradeForm.ticker.toUpperCase(),
+        action: tradeForm.action,
+        shares: parseFloat(tradeForm.shares),
+        price: parseFloat(tradeForm.price),
+        strategy: tradeForm.strategy || 'Manual'
       });
-
-      const data = await response.json();
 
       if (data.success) {
         setTradeStatus({ type: 'success', message: `✓ Trade executed: ${data.trade_id}` });
