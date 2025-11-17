@@ -4,8 +4,8 @@
 const awsConfig = {
   Auth: {
     Cognito: {
-      userPoolId: 'us-east-1_EktqgQ3JB',
-      userPoolClientId: '2mibkeeeec0m928jovj4bgmb00',
+      userPoolId: 'us-east-1_uVcpjMFqN',
+      userPoolClientId: '7c2mne1mabiemqt6hgi893dtem',
       loginWith: {
         oauth: {
           domain: 'surge-trading-377235610121.auth.us-east-1.amazoncognito.com',
@@ -20,7 +20,7 @@ const awsConfig = {
   API: {
     REST: {
       SurgeAPI: {
-        endpoint: 'https://fwe80ww96b.execute-api.us-east-1.amazonaws.com/prod',
+        endpoint: 'https://xsu0i40cv8.execute-api.us-east-1.amazonaws.com/prod',
         region: 'us-east-1',
       },
     },
