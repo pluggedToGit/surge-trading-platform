@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/surge-trading-platform/static/css/main.79162aab.css",
+    "main.js": "/surge-trading-platform/static/js/main.a5334ade.js",
+    "static/js/453.f346d248.chunk.js": "/surge-trading-platform/static/js/453.f346d248.chunk.js",
+    "index.html": "/surge-trading-platform/index.html",
+    "main.79162aab.css.map": "/surge-trading-platform/static/css/main.79162aab.css.map",
+    "main.a5334ade.js.map": "/surge-trading-platform/static/js/main.a5334ade.js.map",
+    "453.f346d248.chunk.js.map": "/surge-trading-platform/static/js/453.f346d248.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.79162aab.css",
+    "static/js/main.a5334ade.js"
+  ]
+}
