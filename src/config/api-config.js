@@ -7,7 +7,7 @@ const isDevelopment = window.location.hostname === 'localhost' || window.locatio
 // Production (GitHub Pages) uses AWS API Gateway
 export const API_BASE_URL = isDevelopment 
   ? 'http://localhost:5000'  // Local Flask API
-  : 'https://fwe80ww96b.execute-api.us-east-1.amazoncognito.com/prod';  // AWS API Gateway
+  : 'https://fwe80ww96b.execute-api.us-east-1.amazonaws.com/prod';  // AWS API Gateway
 
 console.log(`🌐 API Mode: ${isDevelopment ? 'LOCAL' : 'PRODUCTION'}`);
 console.log(`📡 API Endpoint: ${API_BASE_URL}`);
