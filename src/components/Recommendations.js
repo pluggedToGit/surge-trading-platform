@@ -210,7 +210,7 @@ const Recommendations = () => {
       // Fallback to mock data if API fails
       loadMockData();
     }
-  }, [apiUrl, customStartDate]);
+  }, [customStartDate]);
 
   useEffect(() => {
     // Load recommendations from API
