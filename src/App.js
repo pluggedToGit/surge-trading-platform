@@ -1,47 +1,27 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Hero from './components/Hero';
-import Features from './components/Features';
-import Strategies from './components/Strategies';
-import Recommendations from './components/Recommendations';
-import HowItWorks from './components/HowItWorks';
-import Performance from './components/Performance';
-import Portfolio from './components/Portfolio';
-import Footer from './components/Footer';
+import Navigation from './components/Navigation';
+import LandingPage from './components/LandingPage';
+import TodaysRecommendations from './components/TodaysRecommendations';
+import PortfolioPage from './components/PortfolioPage';
+import HistoricalPerformance from './components/HistoricalPerformance';
+import About from './components/About';
 
 function App() {
   return (
-    <div className="App">
-      <nav className="navbar">
-        <div className="nav-container">
-          <div className="nav-logo">
-            <span className="logo-icon">⚡</span>
-            <span className="logo-text">SURGE</span>
-            <span className="logo-subtitle">Strategic Universal Return Generation Engine</span>
-          </div>
-          <div className="nav-links">
-            <a href="#hero">Home</a>
-            <a href="#features">Features</a>
-            <a href="#strategies">Strategies</a>
-            <a href="#recommendations">Today's Picks</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#performance">Performance</a>
-            <a href="#portfolio">Portfolio</a>
-          </div>
-        </div>
-      </nav>
-
-      <Hero />
-      <Features />
-      <Strategies />
-      <div id="recommendations">
-        <Recommendations />
+    <Router>
+      <div className="App">
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/recommendations" element={<TodaysRecommendations />} />
+          <Route path="/portfolio" element={<PortfolioPage />} />
+          <Route path="/performance" element={<HistoricalPerformance />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
       </div>
-      <HowItWorks />
-      <Performance />
-      <Portfolio />
-      <Footer />
-    </div>
+    </Router>
   );
 }
 

@@ -203,7 +203,13 @@ const Recommendations = () => {
         buyHoldFinalValue: rec.buy_hold_final_value || 0,
         buyHoldTaxesPaid: rec.buy_hold_taxes_paid || 0,
         excessReturn: rec.excess_return_pct || 0,
-        trades: rec.trades || []
+        trades: rec.trades || [],
+        // NEW fields for UI enhancements
+        strategyConfidence: rec.strategy_confidence,  // HIGH/MODERATE/LOW
+        annualVolatility: rec.annual_volatility,  // Percentage
+        isBuyHoldRecommendation: rec.is_buy_hold_recommendation || false,  // Flag
+        tradeInstruction: rec.trade_instruction || null,  // Today's trade
+        currentPrice: rec.current_price || 0
       }));
 
       setRecommendations(transformedData);
@@ -653,12 +659,35 @@ const Recommendations = () => {
                 <div className="ticker-info">
                   <h3>{rec.ticker}</h3>
                   <span className="strategy">{rec.strategy}</span>
+                  {rec.strategyConfidence && rec.strategyConfidence !== 'N/A' && (
+                    <span className={`volatility-badge ${rec.strategyConfidence.toLowerCase()}`}>
+                      📊 {rec.strategyConfidence} Confidence
+                    </span>
+                  )}
                 </div>
                 <div className={`confidence-indicator ${rec.confidence.toLowerCase()}`}>
                   <span className="stars">{rec.stars}</span>
                   <span className="level">{rec.confidence}</span>
                 </div>
               </div>
+
+              {/* Buy & Hold Warning Banner */}
+              {rec.isBuyHoldRecommendation && (
+                <div className="buy-hold-banner">
+                  ⚠️ BUY & HOLD RECOMMENDED - Active strategies underperform by {Math.abs(rec.excessReturn || 0).toFixed(1)}%
+                </div>
+              )}
+
+              {/* Today's Trade Instruction */}
+              {rec.tradeInstruction && (
+                <div className={`trade-instruction ${rec.tradeInstruction.action.toLowerCase()}`}>
+                  <div className="instruction-header">💼 Monday's Action:</div>
+                  <div className="instruction-text">{rec.tradeInstruction.instruction}</div>
+                  {rec.tradeInstruction.details && (
+                    <div className="instruction-details">{rec.tradeInstruction.details}</div>
+                  )}
+                </div>
+              )}
 
               <div className="rec-stats">
                 <div className="stat">
@@ -679,6 +708,12 @@ const Recommendations = () => {
                   <span className="stat-label">Sharpe</span>
                   <span className="stat-value">{rec.sharpeRatio.toFixed(2)}</span>
                 </div>
+                {rec.annualVolatility && (
+                  <div className="stat">
+                    <span className="stat-label">Volatility</span>
+                    <span className="stat-value">{rec.annualVolatility.toFixed(1)}%</span>
+                  </div>
+                )}
               </div>
 
               <div className="rec-reasoning">
