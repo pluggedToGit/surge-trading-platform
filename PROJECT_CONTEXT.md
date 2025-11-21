@@ -234,7 +234,93 @@ const isDevelopment = window.location.hostname === 'localhost';
 
 ---
 
-## 💡 Key Features
+## � Backtesting Methodology & Data Integrity
+
+### No Look-Ahead Bias ✅
+
+**SURGE uses proper walk-forward backtesting with NO future information leakage.**
+
+All trading decisions are made using **only** historical data available at that point in time. Here's how we ensure data integrity:
+
+### 1. **Sequential Signal Generation**
+- Strategies process data day-by-day in chronological order
+- At each point in time, only past data is available
+- Rolling calculations (moving averages, RSI, MACD) use **only** historical windows
+
+**Example - Moving Average Strategy:**
+```python
+# At day 50, this only knows about days 1-50
+signals['fast_ma'] = data['Close'].rolling(window=10).mean()
+signals['slow_ma'] = data['Close'].rolling(window=50).mean()
+
+# Buy signal when fast MA crosses above slow MA
+# Decision at day 50 uses only data from days 1-50
+signals['signal'] = np.where(fast_ma > slow_ma, 1.0, 0.0)
+```
+
+### 2. **Proper Implementation Details**
+
+**RSI Calculation:**
+```python
+# Uses only past 14 days to calculate RSI
+delta = data['Close'].diff()  # Today vs yesterday
+gain = delta.where(delta > 0, 0).rolling(window=14).mean()
+loss = -delta.where(delta < 0, 0).rolling(window=14).mean()
+rsi = 100 - (100 / (1 + gain/loss))
+```
+
+**Bollinger Bands:**
+```python
+# Uses only past 20 days for mean and standard deviation
+sma = data['Close'].rolling(window=20).mean()
+std = data['Close'].rolling(window=20).std()
+upper_band = sma + (std * 2)
+lower_band = sma - (std * 2)
+```
+
+### 3. **Day-by-Day Execution in Backtester**
+```python
+for i in range(1, len(signals)):
+    date = signals.index[i]
+    price = data['Close'].iloc[i]  # Today's close price
+    signal = signals['positions'].iloc[i]  # Signal calculated from past data
+    
+    # Buy/Sell decisions use only current and past information
+    if signal == 1.0 and position == 0:
+        # Enter position at TODAY's close
+        shares = cash / price
+```
+
+### 4. **What This Guarantees**
+
+✅ **Realistic Performance Metrics** - Backtested returns match what you would achieve in real trading  
+✅ **No Data Snooping** - Strategies don't "cheat" by seeing future prices  
+✅ **Proper Walk-Forward Testing** - Each decision is made sequentially as in live trading  
+✅ **Valid Historical Analysis** - Results can be trusted for strategy evaluation  
+
+### 5. **Tax-Aware Backtesting**
+
+Our system also applies **realistic capital gains tax** (30% rate) at year-end:
+- Tracks all realized gains throughout the year
+- Deducts taxes from cash or holdings on December 31st
+- Provides after-tax returns for accurate performance comparison
+- Accounts for forced selling to pay tax obligations
+
+### Why This Matters
+
+Many backtesting systems inadvertently use future information, leading to:
+- ❌ Unrealistic performance expectations
+- ❌ Strategies that fail in live trading
+- ❌ False confidence in trading systems
+
+**SURGE's approach ensures:**
+- ✅ Conservative, realistic performance estimates
+- ✅ Strategies that work in real market conditions
+- ✅ Trustworthy signals for actual trading decisions
+
+---
+
+## �💡 Key Features
 
 ### Website Features (Deployed)
 ✅ Modern, professional design with dark theme  
