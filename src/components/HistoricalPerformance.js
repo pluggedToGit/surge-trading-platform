@@ -36,6 +36,8 @@ const HistoricalPerformance = () => {
   const [expandedStrategy, setExpandedStrategy] = useState(null);
   const [initialCapital, setInitialCapital] = useState(10000);
   const [tempCapital, setTempCapital] = useState('10000');
+  const [customTicker, setCustomTicker] = useState('');
+  const [showCustomTickerInput, setShowCustomTickerInput] = useState(false);
 
   const tickers = ['TQQQ', 'SQQQ', 'AMD', 'TSLA', 'RKLB'];
 
@@ -109,6 +111,15 @@ const HistoricalPerformance = () => {
     } else {
       alert('Please enter a valid amount greater than 0');
       setTempCapital(initialCapital.toString());
+    }
+  };
+
+  const handleCustomTickerSubmit = () => {
+    if (customTicker.trim()) {
+      const upperTicker = customTicker.trim().toUpperCase();
+      setSelectedTicker(upperTicker);
+      setShowCustomTickerInput(false);
+      setCustomTicker('');
     }
   };
 
@@ -228,7 +239,32 @@ const HistoricalPerformance = () => {
                 {ticker}
               </button>
             ))}
+            <button
+              className={`ticker-btn custom ${showCustomTickerInput ? 'active' : ''}`}
+              onClick={() => setShowCustomTickerInput(!showCustomTickerInput)}
+            >
+              + Custom
+            </button>
           </div>
+          {showCustomTickerInput && (
+            <div className="custom-ticker-input">
+              <input
+                type="text"
+                placeholder="Enter ticker symbol (e.g., AAPL)"
+                value={customTicker}
+                onChange={(e) => setCustomTicker(e.target.value.toUpperCase())}
+                onKeyPress={(e) => e.key === 'Enter' && handleCustomTickerSubmit()}
+              />
+              <button onClick={handleCustomTickerSubmit}>
+                Analyze
+              </button>
+            </div>
+          )}
+          {!tickers.includes(selectedTicker) && (
+            <div className="custom-ticker-display">
+              📊 Analyzing: <strong>{selectedTicker}</strong>
+            </div>
+          )}
         </div>
 
         <div className="period-selector">

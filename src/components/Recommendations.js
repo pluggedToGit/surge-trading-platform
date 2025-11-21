@@ -35,6 +35,8 @@ const Recommendations = () => {
   const [showTableView, setShowTableView] = useState(false);
   const [customStartDate, setCustomStartDate] = useState('1980-01-01');
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [customTickers, setCustomTickers] = useState('');
+  const [activeTickers, setActiveTickers] = useState(['TQQQ', 'SQQQ', 'AMD', 'TSLA', 'RKLB']);
 
   const loadMockData = () => {
     // Fallback mock data in case API is unavailable
@@ -157,7 +159,7 @@ const Recommendations = () => {
       
       // Call the API
       const apiData = await portfolioAPI.getRecommendations({
-        tickers: ['TQQQ', 'SQQQ', 'AMD', 'TSLA', 'RKLB'],
+        tickers: activeTickers,
         date: new Date().toISOString().split('T')[0],
         start_date: customStartDate  // Use custom start date
       });
@@ -210,7 +212,22 @@ const Recommendations = () => {
       // Fallback to mock data if API fails
       loadMockData();
     }
-  }, [customStartDate]);
+  }, [customStartDate, activeTickers]);
+
+  const handleCustomTickersSubmit = () => {
+    if (customTickers.trim()) {
+      const tickerArray = customTickers
+        .toUpperCase()
+        .split(',')
+        .map(t => t.trim())
+        .filter(t => t.length > 0);
+      
+      if (tickerArray.length > 0) {
+        setActiveTickers(tickerArray);
+        setShowDatePicker(false);
+      }
+    }
+  };
 
   useEffect(() => {
     // Load recommendations from API
@@ -591,6 +608,54 @@ const Recommendations = () => {
             </div>
           )}
         </div>
+
+        {/* Custom Tickers Configuration */}
+        <div className="date-config-section" style={{ marginTop: '20px' }}>
+          <div className="date-config-header">
+            <span className="date-config-label">🎯 Active Tickers: <strong>{activeTickers.join(', ')}</strong></span>
+            <button 
+              className="toggle-date-picker-btn"
+              onClick={() => setShowDatePicker(prev => !prev)}
+            >
+              {showDatePicker ? '✖ Close' : '⚙️ Add Custom Tickers'}
+            </button>
+          </div>
+          
+          {showDatePicker && (
+            <div className="date-picker-panel">
+              <div className="date-picker-content">
+                <label htmlFor="custom-tickers-input">Enter Ticker Symbols (comma-separated):</label>
+                <input
+                  id="custom-tickers-input"
+                  type="text"
+                  placeholder="e.g., AAPL, MSFT, GOOGL, NVDA"
+                  value={customTickers}
+                  onChange={(e) => setCustomTickers(e.target.value.toUpperCase())}
+                  onKeyPress={(e) => e.key === 'Enter' && handleCustomTickersSubmit()}
+                  className="date-input"
+                  style={{ textTransform: 'uppercase' }}
+                />
+                <button onClick={handleCustomTickersSubmit} className="apply-btn">
+                  Apply Custom Tickers
+                </button>
+                <div className="date-presets">
+                  <button onClick={() => { setActiveTickers(['TQQQ', 'SQQQ', 'AMD', 'TSLA', 'RKLB']); setShowDatePicker(false); }} className="preset-btn">
+                    Default (TQQQ, SQQQ, AMD, TSLA, RKLB)
+                  </button>
+                  <button onClick={() => { setActiveTickers(['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA']); setShowDatePicker(false); }} className="preset-btn">
+                    FAANG
+                  </button>
+                  <button onClick={() => { setActiveTickers(['SPY', 'QQQ', 'IWM', 'DIA']); setShowDatePicker(false); }} className="preset-btn">
+                    ETFs
+                  </button>
+                </div>
+                <p className="date-info">
+                  ℹ️ Enter any valid stock ticker symbols. Analysis may take longer for multiple tickers.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Best Opportunities Section */}
@@ -669,7 +734,7 @@ const Recommendations = () => {
               {/* Today's Trade Instruction */}
               {rec.tradeInstruction && (
                 <div className={`trade-instruction ${rec.tradeInstruction.action.toLowerCase()}`}>
-                  <div className="instruction-header">💼 Monday's Action:</div>
+                  <div className="instruction-header">💼 Today's Action:</div>
                   <div className="instruction-text">{rec.tradeInstruction.instruction}</div>
                   {rec.tradeInstruction.details && (
                     <div className="instruction-details">{rec.tradeInstruction.details}</div>
