@@ -3,10 +3,10 @@
 
 const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
-// Local development uses Flask backend on localhost:5000
+// Local development uses Flask backend on localhost:5454
 // Production (GitHub Pages) uses AWS API Gateway
 export const API_BASE_URL = isDevelopment 
-  ? 'http://localhost:5000'  // Local Flask API
+  ? 'http://localhost:5454'  // Local Flask API
   : 'https://xsu0i40cv8.execute-api.us-east-1.amazonaws.com/prod';  // AWS API Gateway
 
 console.log(`🌐 API Mode: ${isDevelopment ? 'LOCAL' : 'PRODUCTION'}`);

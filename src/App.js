@@ -14,7 +14,7 @@ import About from './components/About';
 function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router basename="/surge-trading-platform">
         <div className="App">
           <Navigation />
           <Routes>
